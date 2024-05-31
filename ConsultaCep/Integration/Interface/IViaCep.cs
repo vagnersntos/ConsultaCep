@@ -1,5 +1,4 @@
 ﻿using ConsultaCep.Integracao.Response;
-using Refit;
 
 namespace ConsultaCep.Integration.Interface
 {
