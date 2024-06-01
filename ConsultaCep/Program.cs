@@ -1,8 +1,12 @@
 
+using ConsultaCep.Data;
 using ConsultaCep.Integration;
 using ConsultaCep.Integration.Interface;
 using ConsultaCep.Integration.ViaCepIntegration;
+using ConsultaCep.Repositories;
+using ConsultaCep.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Refit;
@@ -74,6 +78,13 @@ namespace ConsultaCep
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
                 };
             });
+
+            builder.Services.AddEntityFrameworkSqlServer()
+                .AddDbContext<UserDBContext>(
+                    options => options.UseSqlServer(builder.Configuration.GetConnectionString("DataBase"))
+                );
+
+            builder.Services.AddScoped<IUserRepositories, UserRepositorie>();
 
             var app = builder.Build();
 
